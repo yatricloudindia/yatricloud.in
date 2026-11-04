@@ -85,17 +85,16 @@ export const Navbar = ({ heroTheme, forceWhiteBg = false }: { heroTheme?: 'light
         return;
       }
       const email = user.email?.trim().toLowerCase() || "";
-      const [mentorRes, trainerRes, teamRes, adminAccess] = await Promise.all([
-        supabase.from("mentors").select("id").eq("user_id", uid).maybeSingle(),
-        supabase.from("trainers").select("id").eq("user_id", uid).maybeSingle(),
+      // Mentors and trainers live on yatricloud.com; this site's database has no such tables.
+      const [teamRes, adminAccess] = await Promise.all([
         supabase.from("website_team").select("id").or(`user_id.eq.${uid},email.ilike.${email}`).maybeSingle(),
         // Same access source the /admin console uses, so the link only shows when access is granted.
         getMyPermissions().catch(() => null),
       ]);
 
       if (!cancelled) {
-        setIsMentor(Boolean(mentorRes.data));
-        setIsTrainer(Boolean(trainerRes.data));
+        setIsMentor(false);
+        setIsTrainer(false);
         setIsTeamMember(Boolean(teamRes.data));
         setIsAdmin(Boolean(adminAccess?.isActive && hasAnyAdminAccess(adminAccess.role, adminAccess.permissions)));
       }

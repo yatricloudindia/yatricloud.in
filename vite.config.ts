@@ -54,6 +54,44 @@ function devResumeUploadPlugin(env: Record<string, string>) {
   };
 }
 
+// Runs the Vercel functions in api/ inside the Vite dev server, so payments and
+// emails work locally with `npm run dev` (no separate server.js). Mirrors the
+// rewrites in vercel.json. Dev only; production uses Vercel directly.
+function devVercelApiPlugin(env: Record<string, string>) {
+  const ROUTES: Record<string, string> = { razorpay: "razorpay", "send-email": "send-email", currency: "currency" };
+  return {
+    name: "dev-vercel-api",
+    configureServer(server: any) {
+      for (const [k, v] of Object.entries(env)) if (process.env[k] === undefined) process.env[k] = v;
+      server.middlewares.use(async (req: any, res: any, next: any) => {
+        const url = new URL(req.url || "/", "http://localhost");
+        const m = url.pathname.match(/^\/api\/([^/]+)(?:\/([^/]+))?\/?$/);
+        const file = m && ROUTES[m[1]];
+        if (!file) return next();
+        const query: Record<string, string> = Object.fromEntries(url.searchParams);
+        if (file === "razorpay" && m![2]) query.action = m![2];
+        let raw = "";
+        req.on("data", (c: any) => { raw += c; });
+        req.on("end", async () => {
+          try {
+            req.query = query;
+            req.body = raw && String(req.headers["content-type"] || "").includes("json") ? JSON.parse(raw) : raw || undefined;
+            res.status = (code: number) => { res.statusCode = code; return res; };
+            res.json = (obj: unknown) => { res.setHeader("Content-Type", "application/json"); res.end(JSON.stringify(obj)); return res; };
+            res.send = (body: any) => { res.end(typeof body === "string" || Buffer.isBuffer(body) ? body : JSON.stringify(body)); return res; };
+            res.redirect = (a: any, b?: any) => { res.statusCode = typeof a === "number" ? a : 302; res.setHeader("Location", typeof a === "number" ? b : a); res.end(); return res; };
+            const mod = await server.ssrLoadModule(`/api/${file}.ts`);
+            await mod.default(req, res);
+          } catch (err: any) {
+            console.error(`[dev-api] /api/${file}:`, err?.message || err);
+            if (!res.headersSent) { res.statusCode = 500; res.setHeader("Content-Type", "application/json"); res.end(JSON.stringify({ error: "Dev API error" })); }
+          }
+        });
+      });
+    },
+  };
+}
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
@@ -125,7 +163,7 @@ export default defineConfig(({ mode }) => {
       },
     },
   },
-  plugins: [react(), devResumeUploadPlugin(env)],
+  plugins: [react(), devResumeUploadPlugin(env), devVercelApiPlugin(env)],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
