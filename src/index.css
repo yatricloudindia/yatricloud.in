@@ -1,0 +1,686 @@
+/* Self-hosted variable fonts with STABLE urls (/public/fonts) so index.html
+   can preload them — hashed @fontsource asset names can't be preloaded.
+   Latin + latin-ext subsets only (the site is English); font-face blocks
+   mirror @fontsource-variable's, just repointed. */
+@font-face {
+  font-family: 'Inter Tight Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(/fonts/inter-tight-latin-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: 'Inter Tight Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url(/fonts/inter-tight-latin-ext-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Bricolage Grotesque Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url(/fonts/bricolage-grotesque-latin-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: 'Bricolage Grotesque Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url(/fonts/bricolage-grotesque-latin-ext-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Yatri Cloud Practice Hub Design System
+   Dark theme with blue accents (#007CFF), premium feel
+   All colors in HSL format
+*/
+
+@layer base {
+  :root {
+    /* Light theme as default */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 9%;
+
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 9%;
+
+    --popover: 0 0% 98%;
+    --popover-foreground: 0 0% 9%;
+
+    /* Brand blue stays #007CFF (see --blue-500/--band-blue). Interactive
+       fills use the 44% step so white button text passes WCAG AA 4.5:1 —
+       #0080FF with white was 3.79:1 (PageSpeed accessibility failure). */
+    --primary: 210 100% 44%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 9%;
+
+    --muted: 0 0% 96%;
+    /* 38% (was 45%): 45% failed 4.5:1 on the blue band tints (3.7:1). */
+    --muted-foreground: 0 0% 38%;
+
+    /* Hover/focus wash for ghost+outline controls and menu items. Was a
+       saturated blue (210 100% 44%) that swallowed icons and read as a hard
+       flash on every hover — now a light brand tint with readable blue text,
+       matching the D20 "light-bg controls" convention. */
+    --accent: 210 100% 96%;
+    --accent-foreground: 210 100% 32%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 210 100% 50%;
+
+    --radius: 0.75rem;
+
+    /* Custom tokens */
+    --gradient-blue: linear-gradient(135deg, hsl(210 100% 50%), hsl(200 100% 55%));
+    --gradient-dark: linear-gradient(180deg, hsl(0 0% 98%), hsl(0 0% 95%));
+    --glow-blue: 0 0 60px hsl(210 100% 50% / 0.2);
+    --glow-soft: 0 0 40px hsl(210 100% 50% / 0.1);
+
+    /* ============================================================
+       REDESIGN ADDITIVE TOKENS (2026-07) — existing colors above are UNCHANGED.
+       These only power NEW usages (bands, shadows, motion, display type).
+       ============================================================ */
+    --font-display: 'Bricolage Grotesque Variable', 'Inter Tight Variable', system-ui, sans-serif;
+
+    /* Blue accent scale — same hue (210) as --primary, additive only */
+    --blue-50: 210 100% 97%;
+    --blue-100: 210 100% 93%;
+    --blue-200: 210 100% 85%;
+    --blue-300: 210 100% 74%;
+    --blue-400: 210 100% 62%;
+    --blue-500: 210 100% 50%;
+    --blue-600: 210 100% 44%;
+    --blue-700: 212 100% 38%;
+    --blue-800: 214 95% 30%;
+    --blue-900: 216 90% 22%;
+
+    /* Section background bands (blue is the only allowed bg hue) */
+    --band-tint: 210 100% 97%;   /* light-blue wash */
+    --band-blue: 210 100% 50%;   /* logo blue feature band (white text) */
+
+    /* Elevation scale */
+    --shadow-inset: inset 0 0.5px 0 hsl(0 0% 100% / 0.25), inset 0 0 0 0.5px hsl(0 0% 0% / 0.2), 0 1px 2px hsl(0 0% 0% / 0.08);
+    --shadow-card: 0 4px 16px hsl(0 0% 0% / 0.06);
+    --shadow-elevated: 0 12px 32px hsl(0 0% 0% / 0.10);
+    --shadow-focus: 0 0 0 3px hsl(var(--ring) / 0.35);
+
+    /* Motion tokens */
+    --dur-fast: 150ms;
+    --dur-base: 220ms;
+    --dur-slow: 360ms;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in: cubic-bezier(0.4, 0, 1, 1);
+
+    /* Semantic status (additive) */
+    --success: 152 60% 42%;
+    --warning: 38 92% 50%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 9%;
+    --sidebar-primary: 210 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 96%;
+    --sidebar-accent-foreground: 0 0% 9%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 210 100% 50%;
+  }
+
+  .dark {
+    /* Dark theme */
+    --background: 0 0% 4%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 98%;
+
+    /* Dark AA pair: a lighter blue fill with near-black text (6.4:1) — the
+       standard accessible dark pattern. White on #0080FF was 3.79:1, and no
+       single blue passes as both a fill under white text AND link text on
+       near-black, so dark splits the pair instead. text-primary links get
+       7.1:1 on the page background. */
+    --primary: 210 100% 62%;
+    --primary-foreground: 214 60% 10%;
+
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
+
+    --accent: 210 100% 62%;
+    --accent-foreground: 214 60% 10%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 210 100% 50%;
+
+    --sidebar-background: 0 0% 6%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 210 100% 62%;
+    --sidebar-primary-foreground: 214 60% 10%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 210 100% 50%;
+
+    /* Dark theme custom tokens */
+    --gradient-dark: linear-gradient(180deg, hsl(0 0% 4%), hsl(0 0% 8%));
+    --glow-blue: 0 0 60px hsl(210 100% 50% / 0.3);
+    --glow-soft: 0 0 40px hsl(210 100% 50% / 0.15);
+
+    /* Redesign additive tokens — dark overrides (blue scale/font/motion inherit) */
+    /* Hover step for filled buttons must stay lighter than the 62% fill so
+       the dark --primary-foreground keeps AA on hover (7.6:1). */
+    --blue-600: 210 100% 68%;
+    /* Faintest blue washes read as deep navy in dark, not near-white. */
+    --blue-50: 214 50% 12%;
+    --blue-100: 214 50% 16%;
+    --band-tint: 214 50% 8%;   /* deep blue-black wash */
+    --shadow-card: 0 4px 16px hsl(0 0% 0% / 0.4);
+    --shadow-elevated: 0 12px 32px hsl(0 0% 0% / 0.5);
+    --success: 152 55% 48%;
+    --warning: 38 92% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Accessibility: honor reduced-motion globally (redesign) */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: "Inter Tight Variable", "Inter Tight", sans-serif;
+  }
+  
+  /* Global Typographic Scale for Headings (Minimal & Clean UX) */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight text-foreground;
+  }
+  /* Brand-blue header banners: ensure titles and subtitles are always crisp white */
+  [class*="from-brand-700"] h1,
+  [class*="from-brand-700"] h2,
+  [class*="from-brand-700"] h3 {
+    color: #ffffff;
+  }
+  h1 {
+    @apply text-3xl md:text-4xl font-bold;
+  }
+  h2 {
+    @apply text-2xl md:text-3xl font-bold;
+  }
+  h3 {
+    @apply text-xl md:text-2xl font-semibold;
+  }
+  h4 {
+    @apply text-lg md:text-xl font-semibold;
+  }
+  h5 {
+    @apply text-base font-semibold;
+  }
+  h6 {
+    @apply text-sm font-semibold uppercase tracking-wider text-muted-foreground;
+  }
+}
+
+@layer components {
+  /* Noise texture overlay */
+  .noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(210 100% 50%), hsl(200 100% 55%));
+  }
+
+  /* Scrollbar hide */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Glow effects */
+  .glow-orange {
+    box-shadow: var(--glow-blue);
+  }
+
+  .glow-soft {
+    box-shadow: var(--glow-soft);
+  }
+
+  /* Glass effect */
+  .glass {
+    @apply bg-card/80 backdrop-blur-xl border border-border/50;
+  }
+
+  /* Navbar glass (stronger blur, canvas-tinted) — redesign */
+  .glass-nav {
+    background-color: hsl(var(--background) / 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid hsl(var(--border));
+  }
+
+  /* Section background bands (redesign §5b) */
+  .band-tint {
+    background-color: hsl(var(--band-tint));
+  }
+  .band-blue {
+    background-color: hsl(var(--band-blue));
+    color: hsl(0 0% 100%);
+  }
+  .band-blue h1,
+  .band-blue h2,
+  .band-blue h3,
+  .band-blue h4,
+  .band-blue h5,
+  .band-blue h6 {
+    color: #ffffff;
+  }
+  /* Inverts to near-black in light theme, near-white in dark theme */
+  .band-invert {
+    background-color: hsl(var(--foreground));
+    color: hsl(var(--background));
+  }
+
+  /* Display type for headings */
+  .font-display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  /* Tactile inset shadow signature (primary buttons) */
+  .shadow-inset-btn {
+    box-shadow: var(--shadow-inset);
+  }
+
+  /* Waving hand for the "Hello Yatris 👋" greeting */
+  @keyframes wave {
+    0%, 60%, 100% { transform: rotate(0deg); }
+    10%, 30% { transform: rotate(14deg); }
+    20% { transform: rotate(-8deg); }
+    40% { transform: rotate(-4deg); }
+    50% { transform: rotate(10deg); }
+  }
+  .animate-wave {
+    animation: wave 2.5s ease-in-out infinite;
+    transform-origin: 70% 70%;
+  }
+
+  /* Marquee animation */
+  @keyframes marquee {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+
+  .animate-marquee-slow {
+    animation: marquee 40s linear infinite;
+  }
+
+  /* Vertical testimonial wall (presentational, redesign) */
+  @keyframes wall-up {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-50%);
+    }
+  }
+  @keyframes wall-down {
+    from {
+      transform: translateY(-50%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  .wall-col {
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    will-change: transform;
+  }
+  .wall-up {
+    animation-name: wall-up;
+  }
+  .wall-down {
+    animation-name: wall-down;
+  }
+
+  /* Float animation */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Pulse glow */
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px hsl(210 100% 50% / 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px hsl(210 100% 50% / 0.5);
+    }
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* 3D Globe utilities */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  /* ============================================================
+     Toast motion + elevation (redesign additive — 2026-07)
+     Springy slide-in from top, quick fade+shrink exit.
+     Transform/opacity only; the global prefers-reduced-motion
+     rule above collapses these to instant.
+     ============================================================ */
+  @keyframes toast-in {
+    0% {
+      opacity: 0;
+      transform: translateX(calc(100% + 24px)) scale(0.96);
+    }
+    55% {
+      opacity: 1;
+      transform: translateX(-6px) scale(1.005);
+    }
+    75% {
+      transform: translateX(2px) scale(1);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+  }
+  @keyframes toast-out {
+    0% {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(32px) scale(0.96);
+    }
+  }
+  .animate-toast-in {
+    animation: toast-in 0.55s var(--ease-out) both;
+  }
+  .animate-toast-out {
+    animation: toast-out 0.22s var(--ease-in) both;
+  }
+
+  /* One-off diagonal light sweep across a fresh toast — pure transform/opacity. */
+  @keyframes toast-shine {
+    0% {
+      opacity: 0;
+      transform: translateX(-150%) skewX(-18deg);
+    }
+    25% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(250%) skewX(-18deg);
+    }
+  }
+  .animate-toast-shine {
+    animation: toast-shine 1.1s var(--ease-out) 0.25s both;
+  }
+
+  /* Lifetime meter along the bottom edge — matches the 5s Radix default and
+     pauses while the pointer rests on the toast (Radix pauses the timer too). */
+  @keyframes toast-progress {
+    from {
+      transform: scaleX(1);
+    }
+    to {
+      transform: scaleX(0);
+    }
+  }
+  .animate-toast-progress {
+    transform-origin: left;
+    animation: toast-progress 5s linear both;
+  }
+
+  /* Blue-glow elevation for the signature brand toasts — additive */
+  .shadow-toast-brand {
+    box-shadow:
+      0 1px 2px hsl(210 100% 30% / 0.25),
+      0 10px 28px hsl(210 100% 45% / 0.35),
+      0 24px 56px hsl(210 100% 50% / 0.18);
+  }
+  .shadow-toast-danger {
+    box-shadow:
+      0 1px 2px hsl(0 72% 30% / 0.25),
+      0 10px 28px hsl(0 78% 45% / 0.35),
+      0 24px 56px hsl(0 84% 50% / 0.18);
+  }
+
+  /* Soft layered shadow for floating surfaces (toasts) — additive */
+  .shadow-toast {
+    box-shadow:
+      0 1px 2px hsl(0 0% 0% / 0.06),
+      0 8px 24px hsl(0 0% 0% / 0.1),
+      0 20px 48px hsl(0 0% 0% / 0.08);
+  }
+  .dark .shadow-toast {
+    box-shadow:
+      0 1px 2px hsl(0 0% 0% / 0.4),
+      0 8px 24px hsl(0 0% 0% / 0.45),
+      0 20px 48px hsl(0 0% 0% / 0.4);
+  }
+}
+/* Google Programmable Search widget: we parse its results into our own tables,
+   so keep the widget's own overlay/results UI off-screen (still rendered in
+   the DOM so we can read it) — the user only ever sees our custom UI. */
+.gsc-results-wrapper-overlay,
+.gsc-results-wrapper-visible {
+  position: fixed !important;
+  left: -99999px !important;
+  top: 0 !important;
+  width: 800px !important;
+  max-width: 800px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+/* The modal backdrop is a full-screen fixed layer that captures scroll/clicks —
+   remove it entirely (results are still in the DOM to read) so the page scrolls. */
+.gsc-modal-background-image,
+.gsc-modal-background-image-visible {
+  display: none !important;
+}
+/* Google's overlay adds a scroll-lock to <body>; never let it stick. */
+body {
+  overflow-y: auto !important;
+}
+
+
+
+/* ============================================================
+   PRISM SYNTAX HIGHLIGHTING DARK THEME
+   Modern developer theme with vibrant syntax colors for code blocks
+   ============================================================ */
+code.prism-code {
+  color: #e2e8f0;
+  text-shadow: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13.5px;
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  line-height: 1.6;
+  tab-size: 2;
+  hyphens: none;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #64748b;
+  font-style: italic;
+}
+
+.token.punctuation {
+  color: #94a3b8;
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: #fb7185;
+}
+
+.token.boolean,
+.token.number {
+  color: #fbbf24;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: #34d399;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #38bdf8;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #c084fc;
+  font-weight: 500;
+}
+
+.token.function,
+.token.class-name {
+  color: #60a5fa;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: #fbbf24;
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+@layer utilities {
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+
+

@@ -1,0 +1,27 @@
+{
+  "name": "Yatri Cloud",
+  "short_name": "Yatri Cloud",
+  "description": "Free cloud certification practice tests, exam dumps and discount vouchers",
+  "icons": [
+    {
+      "src": "/logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo-192.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#007CFF",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/"
+}

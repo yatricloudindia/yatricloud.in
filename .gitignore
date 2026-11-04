@@ -1,0 +1,59 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Environment variables
+.env
+.env*
+!.env.example
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/mcp.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+VITE_CANVA_TEMPLATE_ID=your_template_id_here
+.vercel
+
+# Local reference material & migration source data (not part of the app)
+claude-master/
+/data/
+.env*.bak*
+
+# cert sync reports (generated)
+scripts/.sync-reports/
+
+# Supabase CLI local cache
+supabase/.temp/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/.playwright/
+
+# Playwright saved auth state (never commit sessions)
+e2e/.auth/
+node_modules
+temp/
+storage/
+scraper/storage/
+
+# Local import staging (event photos etc.); uploaded to storage, never committed
+.import/

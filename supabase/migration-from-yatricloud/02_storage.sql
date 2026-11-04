@@ -1,0 +1,4 @@
+insert into storage.buckets (id,name,public,file_size_limit,allowed_mime_types) values ('resource-images','resource-images',true,5242880,array['image/jpeg','image/png','image/webp','image/gif','image/svg+xml']::text[]) on conflict (id) do nothing;
+drop policy if exists "resource_images_public_read" on storage.objects; create policy "resource_images_public_read" on storage.objects for SELECT to public using ((bucket_id = 'resource-images'::text));
+drop policy if exists "resource_images_admin_write" on storage.objects; create policy "resource_images_admin_write" on storage.objects for INSERT to authenticated with check (((bucket_id = 'resource-images'::text) AND is_admin()));
+drop policy if exists "resource_images_admin_delete" on storage.objects; create policy "resource_images_admin_delete" on storage.objects for DELETE to authenticated using (((bucket_id = 'resource-images'::text) AND is_admin()));

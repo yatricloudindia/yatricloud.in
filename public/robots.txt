@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /my-resources
+Disallow: /my-purchases
+Disallow: /resources/view
+Disallow: /receipt/
+Disallow: /admin
